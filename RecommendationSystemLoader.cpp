@@ -6,10 +6,14 @@
 #define ERROR_MSG "input file is incorrect"
 
 
-/*ptr_type*/ RecommendationSystemLoader::create_rs_from_movies(const
-std::string &movies_file_path) noexcept(false)
+
+
+std::unique_ptr<RecommendationSystem>
+RecommendationSystemLoader::create_rs_from_movies
+(const std::string &movies_file_path)
 {
-    /*ptr_type*/ rs = /*use the right std::make... */
+  std::unique_ptr<RecommendationSystem> rs =
+      std::make_unique<RecommendationSystem>();
     std::ifstream in_file;
     in_file.open(movies_file_path);
     std::string buffer;
@@ -29,7 +33,8 @@ std::string &movies_file_path) noexcept(false)
             vec.push_back(ranking);
         }
         size_t end = buffer.find(YEAR_SEPARATOR);
-        rs->add_movie(buffer.substr(0, end), std::stoi(buffer.substr(end + 1, buffer.length())), vec);
+        rs->add_movie(buffer.substr(0, end), std::stoi
+        (buffer.substr(end + 1, buffer.length())), vec);
     }
     in_file.close();
     return rs;
