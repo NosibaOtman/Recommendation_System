@@ -1,5 +1,6 @@
-
 #include "Movie.h"
+
+#include <utility>
 #define HASH_START 17
 #define RES_MULT 31
 
@@ -23,4 +24,26 @@ std::size_t sp_movie_hash(const sp_movie& movie){
  */
 bool sp_movie_equal(const sp_movie& m1,const sp_movie& m2){
     return !(*m1 < *m2) && !(*m2 < *m1);
+}
+Movie::Movie(std::string  name, int year)
+    : _MovieName(std::move(name)), _MovieYear(year) {}
+
+const std::string& Movie::get_name() const {
+  return _MovieName;
+}
+
+int Movie::get_year() const {
+  return _MovieYear;
+}
+
+std::ostream& operator<<(std::ostream& os, const Movie& movie) {
+  os << movie._MovieName << " (" << movie._MovieYear << ")\n";
+  return os;
+}
+
+bool operator<(const Movie& lhs, const Movie& rhs) {
+  if (lhs._MovieYear == rhs._MovieYear) {
+      return lhs._MovieName < rhs._MovieName;
+    }
+  return lhs._MovieYear < rhs._MovieYear;
 }
